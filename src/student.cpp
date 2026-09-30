@@ -71,21 +71,57 @@ string display(Stack& s) {
 
 // SOAL 1
 bool push(Stack& s, int nilai) {
-    return false;
+    Node* nodeBaru = new Node;
+    nodeBaru->data = nilai;
+    nodeBaru->next = s.top;
+    s.top = nodeBaru;
+    return true;
 }
 
 // SOAL 2
 bool pop(Stack& s, int& nilai) {
-    return false;
+    if (s.top == nullptr) {
+        return false;
+    }
 }
 
 // SOAL 3
 void clear(Stack& s) {
+    while (!isEmpty) {
+        int nilai;
+        pop(s, nilai);
+    }
 }
 
 // SOAL 4
 bool kurungSeimbang(const string& ekspresi) {
-    return false;
+    Stack s;
+    inisialisasi(s);
+    for(size_t i=0; i < ekspresi.size(); ++i){
+        char c = ekspresi[i];
+
+        if (c == '(' || c == '[' || c == '{') {
+            push(s, (int)c);
+        }
+        else if (c == ')' || c == ']' || c == '}') {
+            int atas;
+            if (!pop(s, atas)) {          // tutup muncul tanpa pembuka
+                clear(s);
+                return false;
+            }
+            char buka = (char)atas;
+            if ((c == ')' && buka != '(') ||
+                (c == ']' && buka != '[') ||
+                (c == '}' && buka != '{')) {   // jenis tidak cocok / bersilangan
+                clear(s);
+                return false;
+            }
+        }
+    }
+    bool seimbang = isEmpty(s);   // masih ada sisa pembuka = kurang tutup
+    clear(s);
+    return seimbang;
+
 }
 
 // =============================================================================
